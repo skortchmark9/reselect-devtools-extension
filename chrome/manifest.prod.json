@@ -4,8 +4,7 @@
   "manifest_version": 2,
   "description": "Reselect Devtools",
   "page_action": {
-    "default_title": "Reselect Devtools",
-    "default_popup": "popup.html"
+    "default_title": "Reselect Devtools"
   },
   "icons": {
     "16": "img/icon-16.png",

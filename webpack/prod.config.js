@@ -8,6 +8,8 @@ module.exports = {
   entry: {
     'reselect-tools-app': [customPath, path.join(__dirname, '../chrome/extension/reselect-tools-app')],
     background: [customPath, path.join(__dirname, '../chrome/extension/background')],
+    panel: [customPath, path.join(__dirname, '../chrome/extension/panel')],
+    devtools: [customPath, path.join(__dirname, '../chrome/extension/devtools')],
   },
   output: {
     path: path.join(__dirname, '../build/js'),
