@@ -7,6 +7,8 @@
 
 ## Installation
 
+Your app must be using [reselect-tools](https://github.com/skortchmark9/reselect-tools) for this to work.
+
  - from [Chrome Web Store](https://chrome.google.com/webstore/detail/reselect-devtools/cjmaipngmabglflfeepmdiffcijhjlbb);
  - or build it with `npm i && npm run build` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./build/extension`;
  - or run it in dev mode with `npm i && npm run dev` and [load the extension's folder](https://developer.chrome.com/extensions/getstarted#unpacked) `./dev`.
