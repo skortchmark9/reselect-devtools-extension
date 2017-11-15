@@ -6,7 +6,7 @@ const customPath = path.join(__dirname, './customPublicPath');
 
 module.exports = {
   entry: {
-    todoapp: [customPath, path.join(__dirname, '../chrome/extension/todoapp')],
+    'reselect-tools-app': [customPath, path.join(__dirname, '../chrome/extension/reselect-tools-app')],
     background: [customPath, path.join(__dirname, '../chrome/extension/background')],
   },
   output: {

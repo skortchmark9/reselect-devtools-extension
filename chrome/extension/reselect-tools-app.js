@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import Root from '../../app/containers/Root';
 import App from '../../app/containers/App';
-import './todoapp.css';
+import './reselect-tools-app.css';
 
 import { selectorGraph, checkSelector } from './page-api';
 
