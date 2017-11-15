@@ -24,7 +24,7 @@ $ npm run dev
 
 ## Caveat
 
-This is really just an MVP - I still need to write tests and remove cruft from the original [boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate). However, its companion library is, so I want to get that off the ground and then I'll publish updates to this and productionize it better.
+This is really just an MVP - I still need to write tests and remove cruft from the original [boilerplate](https://github.com/jhen0409/react-chrome-extension-boilerplate). However, its companion library is ready, so I want to get that off the ground and then I'll publish updates to this and productionize it better.
 
 ## Boilerplate Cruft
 
