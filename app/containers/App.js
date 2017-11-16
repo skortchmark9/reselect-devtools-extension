@@ -1,15 +1,21 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 import Button from 'remotedev-app/lib/components/Button';
 import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 import MdHelp from 'react-icons/lib/md/help';
 import RefreshIcon from 'react-icons/lib/md/refresh';
+
+import * as SelectorActions from '../actions/graph';
 
 import SelectorInspector from '../components/SelectorInspector';
 import SelectorGraph from '../components/SelectorGraph';
 import StateTree from '../components/StateTree';
+
 
 const contentStyles = {
   content: {
@@ -54,8 +60,9 @@ function renderMessage(message) {
   );
 }
 
+const Subheader = ({ style, children, ...props }) => <h5 style={{ ...style, margin: 0 }} {...props}>{children}</h5>;
 
-const Dock = ({ isOpen, children }) => {
+const Dock = ({ isOpen, toggleDock, children }) => {
   const dockStyle = {
     position: 'absolute',
     background: 'rgb(0, 43, 54)',
@@ -69,15 +76,28 @@ const Dock = ({ isOpen, children }) => {
     zIndex: 1,
     transition: 'transform 200ms ease-out',
   };
-
+  const showButtonStyle = {
+    position: 'relative',
+    right: 0,
+    top: 0,
+    transition: 'transform 200ms ease-out',
+    transform: `translateX(${isOpen ? 0 : '100%'})`,
+  };
   return (
     <div style={dockStyle}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Subheader>checkSelector output</Subheader>
+        <Subheader style={showButtonStyle}>
+          <Button
+            Icon={isOpen ? MdKeyboardArrowLeft : MdKeyboardArrowRight}
+            onClick={toggleDock}
+          >{isOpen ? 'hide output' : 'show output'}</Button>
+        </Subheader>
+      </div>
       {children}
     </div>
   );
 };
-
-const Subheader = ({ style, children, ...props }) => <h5 style={{ ...style, margin: '0.25em' }} {...props}>{children}</h5>;
 
 function openGitRepo() {
   const url = 'https://github.com/skortchmark9/reselect-devtools-extension';
@@ -85,25 +105,31 @@ function openGitRepo() {
 }
 
 
-
+@connect(
+  state => ({
+    graph: state.graph,
+    checkedSelector: state.graph.nodes[state.graph.checkedSelectorId]
+  }),
+  dispatch => ({
+    actions: bindActionCreators(SelectorActions, dispatch)
+  })
+)
 @enhance
 export default class App extends Component {
   static propTypes = {
-    selectorGraph: PropTypes.func.isRequired,
-    checkSelector: PropTypes.func.isRequired,
+    actions: PropTypes.object.isRequired,
+    graph: PropTypes.object,
+    checkedSelector: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      checkedSelectorData: null,
-      checkedSelectorInfo: null,
-      graph: 'loading',
-      isVisible: true,
+      dockIsOpen: true,
     };
     this.handleCheckSelector = this.handleCheckSelector.bind(this);
     this.refreshGraph = this.refreshGraph.bind(this);
-    this.resetSelectorData = this.resetSelectorData.bind(this);
+    this.toggleDock = this.toggleDock.bind(this);
   }
 
   componentDidMount() {
@@ -111,49 +137,43 @@ export default class App extends Component {
   }
 
   refreshGraph() {
-    this.props.selectorGraph()
-      .then(graph => this.setState({ graph }))
-      .catch(() => this.setState({ graph: null }));
+    this.props.actions.getSelectorGraph();
   }
 
   resetSelectorData() {
-    this.setState({ checkedSelectorData: null });
+    this.props.actions.uncheckSelector();
+  }
+
+  toggleDock() {
+    this.setState({
+      dockIsOpen: !this.state.dockIsOpen,
+    });
   }
 
   handleCheckSelector(selectorToCheck) {
-    this.setState({ checkedSelectorInfo: selectorToCheck });
     if (!selectorToCheck.isRegistered) {
       this.resetSelectorData();
       return;
     }
-    this.props.checkSelector(selectorToCheck.name)
-      .then((checkedSelectorData) => {
-        this.setState({ checkedSelectorData });
-      })
-      .catch(this.resetSelectorData);
+    this.props.actions.checkSelector(selectorToCheck);
   }
 
   renderGraph(graph) {
-    const { checkedSelectorData, checkedSelectorInfo } = this.state;
+    const { checkedSelector } = this.props;
+    const { dockIsOpen } = this.state;
 
     return (
       <div style={contentStyles.content}>
         <SelectorInspector
           style={contentStyles.state}
-          selector={checkedSelectorInfo}
+          selector={checkedSelector}
         />
         <div style={contentStyles.graph}>
-          <Dock isOpen={checkedSelectorData}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Subheader>checkSelector output</Subheader>
-              <Subheader>
-                <Button
-                  Icon={MdKeyboardArrowLeft}
-                  onClick={this.resetSelectorData}
-                >hide</Button>
-              </Subheader>
-            </div>
-            <StateTree data={checkedSelectorData} />
+          <Dock isOpen={dockIsOpen} toggleDock={this.toggleDock}>
+            { checkedSelector ?
+              <StateTree data={checkedSelector} /> :
+              <span>No Data</span>
+            }
           </Dock>
           <SelectorGraph
             checkSelector={this.handleCheckSelector}
@@ -165,12 +185,9 @@ export default class App extends Component {
   }
 
   renderContent() {
-    const { graph } = this.state;
-    if (graph === 'loading') {
-      return renderMessage('Loading...');
-    } else if (graph) {
-      return this.renderGraph(graph);
-    }
+    const { graph } = this.props;
+    if (graph.fetchedSuccessfully) return this.renderGraph(graph);
+    if (graph.fetching) return renderMessage('Loading...');
     return renderMessage('Could not load selector graph');
   }
 

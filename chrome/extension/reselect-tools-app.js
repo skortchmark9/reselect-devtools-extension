@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from '../../app/containers/App';
+import Root from '../../app/containers/Root';
 import './reselect-tools-app.css';
 
-import { selectorGraph, checkSelector } from './page-api';
+const createStore = require('../../app/store/configureStore');
 
+
+// import { selectorGraph, checkSelector } from './page-api';
+
+const initialState = {};
 
 ReactDOM.render(
-  <App selectorGraph={selectorGraph} checkSelector={checkSelector} />,
+  <Root store={createStore(initialState)} />,
   document.querySelector('#root')
 );

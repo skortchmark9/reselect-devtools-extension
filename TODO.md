@@ -14,7 +14,7 @@ Features:
 - [ ] search selectors
 - [ ] show page action only when we are on a page w/devtools on it
 - [ ] find nodes that are depended on by a given node
-- [ ] lock drawer open or closed
+- [X] lock drawer open or closed
 - [ ] Enable / disable depending on whether or not reselect tools have been installed
 
 
@@ -27,7 +27,7 @@ Productionize
 - [X] Remove console logs
 - [X] Remove unnecessary pug templates
 - [X] Handle bad loads better
-- [ ] Decide if we need redux
+- [X] Decide if we need redux
 - [ ] Remove all references to boilerplate
 - [ ] Set up linting, at least
 - [ ] At least look at the tests
