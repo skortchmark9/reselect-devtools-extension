@@ -15,18 +15,19 @@ Features:
 - [ ] show page action only when we are on a page w/devtools on it
 - [ ] find nodes that are depended on by a given node
 - [ ] lock drawer open or closed
+- [ ] Enable / disable depending on whether or not reselect tools have been installed
 
 
 Platforms:
 - [ ] Allow remote debugging with an RPC interface a la redux devtools
 
 Productionize
-- [ ] Create icon
+- [X] Create icon
+- [X] Remove todoapp references
+- [X] Remove console logs
+- [X] Remove unnecessary pug templates
+- [X] Handle bad loads better
 - [ ] Decide if we need redux
 - [ ] Remove all references to boilerplate
-- [ ] Remove todoapp references
-- [ ] Remove console logs
 - [ ] Set up linting, at least
 - [ ] At least look at the tests
-- [ ] Remove unnecessary pug templates
-- [ ] Handle bad loads better
