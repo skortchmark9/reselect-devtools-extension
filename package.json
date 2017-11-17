@@ -71,6 +71,7 @@
     "cytoscape": "^3.2.3",
     "cytoscape-dagre": "^2.1.0",
     "react": "^15.0.2",
+    "react-autocomplete": "^1.7.2",
     "react-dom": "^15.0.2",
     "react-icons": "^2.2.7",
     "react-json-tree": "^0.11.0",

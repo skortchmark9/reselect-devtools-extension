@@ -4,17 +4,14 @@ import { connect } from 'react-redux';
 
 import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
-import Button from 'remotedev-app/lib/components/Button';
-import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
-import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
-import MdHelp from 'react-icons/lib/md/help';
-import RefreshIcon from 'react-icons/lib/md/refresh';
-
-import * as SelectorActions from '../actions/graph';
 
 import SelectorInspector from '../components/SelectorInspector';
 import SelectorGraph from '../components/SelectorGraph';
 import StateTree from '../components/StateTree';
+import Dock from '../components/Dock';
+import Header from '../components/Header';
+
+import * as SelectorActions from '../actions/graph';
 
 
 const contentStyles = {
@@ -25,29 +22,12 @@ const contentStyles = {
     position: 'relative',
     flexDirection: 'column',
   },
-  state: {
-    flexShrink: 0,
-    overflowX: 'hidden',
-    overflowY: 'auto',
-    borderBottomWidth: '3px',
-    borderBottomStyle: 'double',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    border: '1px solid rgb(79, 90, 101)',
-    padding: '10px',
-  },
   graph: {
     flexGrow: 1,
     border: '1px solid rgb(79, 90, 101)',
     position: 'relative',
     height: '100%'
   },
-  refreshButton: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  }
 };
 
 
@@ -60,44 +40,6 @@ function renderMessage(message) {
   );
 }
 
-const Subheader = ({ style, children, ...props }) => <h5 style={{ ...style, margin: 0 }} {...props}>{children}</h5>;
-
-const Dock = ({ isOpen, toggleDock, children }) => {
-  const dockStyle = {
-    position: 'absolute',
-    background: 'rgb(0, 43, 54)',
-    top: 0,
-    border: '1px solid rgb(79, 90, 101)',
-    transform: `translateX(${isOpen ? 0 : '-100%'})`,
-    left: 0,
-    height: '100%',
-    padding: '10px',
-    minWidth: '200px',
-    zIndex: 1,
-    transition: 'transform 200ms ease-out',
-  };
-  const showButtonStyle = {
-    position: 'relative',
-    right: 0,
-    top: 0,
-    transition: 'transform 200ms ease-out',
-    transform: `translateX(${isOpen ? 0 : '100%'})`,
-  };
-  return (
-    <div style={dockStyle}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Subheader>checkSelector output</Subheader>
-        <Subheader style={showButtonStyle}>
-          <Button
-            Icon={isOpen ? MdKeyboardArrowLeft : MdKeyboardArrowRight}
-            onClick={toggleDock}
-          >{isOpen ? 'hide output' : 'show output'}</Button>
-        </Subheader>
-      </div>
-      {children}
-    </div>
-  );
-};
 
 function openGitRepo() {
   const url = 'https://github.com/skortchmark9/reselect-devtools-extension';
@@ -165,8 +107,9 @@ export default class App extends Component {
     return (
       <div style={contentStyles.content}>
         <SelectorInspector
-          style={contentStyles.state}
+          onSelectorChosen={this.handleCheckSelector}
           selector={checkedSelector}
+          selectors={graph.nodes}
         />
         <div style={contentStyles.graph}>
           <Dock isOpen={dockIsOpen} toggleDock={this.toggleDock}>
@@ -177,6 +120,7 @@ export default class App extends Component {
           </Dock>
           <SelectorGraph
             checkSelector={this.handleCheckSelector}
+            selector={ checkedSelector }
             {...graph}
           />
         </div>
@@ -194,17 +138,7 @@ export default class App extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <div style={styles.buttonBar}>
-          <Button
-            style={contentStyles.refreshButton}
-            Icon={RefreshIcon}
-            onClick={this.refreshGraph}
-          >Refresh Selector Graph</Button>
-          <Button
-            Icon={MdHelp}
-            onClick={openGitRepo}
-          >Help</Button>
-        </div>
+        <Header onRefresh={this.refreshGraph} onHelp={openGitRepo} />
         { this.renderContent() }
       </div>
     );

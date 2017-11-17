@@ -68,9 +68,7 @@ function createCytoElements(nodes, edges) {
 
 export function drawCytoscapeGraph(container, nodes, edges) {
   const elements = createCytoElements(nodes, edges);
-
-  const cy = cytoscape({ ...cytoDefaults, container, elements });
-  return cy;
+  return cytoscape({ ...cytoDefaults, container, elements });
 }
 
 function paintDependencies(elts) {
@@ -93,7 +91,8 @@ export default class SelectorGraph extends Component {
   static propTypes = {
     nodes: PropTypes.object.isRequired,
     edges: PropTypes.array.isRequired,
-    checkSelector: PropTypes.func
+    checkSelector: PropTypes.func,
+    selector: PropTypes.object,
   };
 
   componentDidMount() {
@@ -105,12 +104,15 @@ export default class SelectorGraph extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.nodes === this.props.nodes && nextProps.edges === this.props.edges) {
-      return;
+    if (nextProps.nodes !== this.props.nodes || nextProps.edges !== this.props.edges) {
+      const { nodes, edges } = nextProps;
+      const elements = createCytoElements(nodes, edges);
+      this.cy.json({ elements });
     }
-    const { nodes, edges } = nextProps;
-    const elements = createCytoElements(nodes, edges);
-    this.cy.json({ elements });
+
+    if (nextProps.selector !== this.props.selector) {
+      this.paintNodeSelection(nextProps.selector);
+    }
   }
 
   shouldComponentUpdate() {
@@ -121,15 +123,20 @@ export default class SelectorGraph extends Component {
     if (this.cy) this.cy.destroy();
   }
 
+  paintNodeSelection(selector) {
+    const { label, ...nodeStyle } = defaultNodeStyle; // eslint-disable-line no-unused-vars
+    this.cy.nodes().style(nodeStyle);
+    this.cy.edges().style(defaultEdgeStyle);
+
+    if (!selector) return;
+    const selectedNode = this.cy.$(`#${selector.id}`);
+    selectedNode.style(selectedNodeStyle);
+    paintDependencies(selectedNode.successors());
+  }
+
   bindEvents() {
     const { checkSelector } = this.props;
-    const self = this;
     function clickHandler() {
-      const { label, ...nodeStyle } = defaultNodeStyle; // eslint-disable-line no-unused-vars
-      self.cy.nodes().style(nodeStyle);
-      self.cy.edges().style(defaultEdgeStyle);
-      this.style(selectedNodeStyle);
-      paintDependencies(this.successors());
       const data = this.data();
       checkSelector(data);
     }

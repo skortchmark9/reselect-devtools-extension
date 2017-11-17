@@ -1,28 +1,35 @@
-import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
+import React, { PropTypes } from 'react';
+import Button from 'remotedev-app/lib/components/Button';
+import MdHelp from 'react-icons/lib/md/help';
+import RefreshIcon from 'react-icons/lib/md/refresh';
+import styles from 'remotedev-app/lib/styles';
 
-export default class Header extends Component {
 
-  static propTypes = {
-    addTodo: PropTypes.func.isRequired
-  };
+const headerStyles = {
+  refreshButton: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+};
 
-  handleSave = (text) => {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
-  };
-
-  render() {
-    return (
-      <header>
-        <h1>soo!</h1>
-        <TodoTextInput
-          newTodo
-          onSave={this.handleSave}
-          placeholder="What needs to be done?"
-        />
-      </header>
-    );
-  }
+export default function Header({ onRefresh, onHelp }) {
+  return (
+    <header style={styles.buttonBar}>
+      <Button
+        style={headerStyles.refreshButton}
+        Icon={RefreshIcon}
+        onClick={onRefresh}
+      >Refresh Selector Graph</Button>
+      <Button
+        Icon={MdHelp}
+        onClick={onHelp}
+      >Help</Button>
+    </header>
+  );
 }
+
+Header.propTypes = {
+  onRefresh: PropTypes.func,
+  onHelp: PropTypes.func,
+};
