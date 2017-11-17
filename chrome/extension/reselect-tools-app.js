@@ -18,7 +18,9 @@ const mockApi = {
 };
 
 
-const apiMiddleware = createApiMiddleware(window.location.origin === 'http://localhost:8000' ? mockApi : api);
+const apiMiddleware = createApiMiddleware(api);
+// const apiMiddleware = createApiMiddleware(window.location.origin === 'http://localhost:8000' ? mockApi : api);
+
 
 const initialState = {};
 

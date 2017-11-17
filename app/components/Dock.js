@@ -7,7 +7,7 @@ const Subheader = ({ style, children, ...props }) => (
   <h5 style={{ ...style, margin: 0 }} {...props}>{children}</h5>
 );
 
-const Dock = ({ isOpen, toggleDock, children }) => {
+const Dock = ({ isOpen, toggleDock, message, children }) => {
   const dockStyle = {
     position: 'absolute',
     background: 'rgb(0, 43, 54)',
@@ -31,7 +31,7 @@ const Dock = ({ isOpen, toggleDock, children }) => {
   return (
     <div style={dockStyle}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Subheader>checkSelector output</Subheader>
+        <Subheader>{message}</Subheader>
         <Subheader style={showButtonStyle}>
           <Button
             Icon={isOpen ? MdKeyboardArrowLeft : MdKeyboardArrowRight}
@@ -48,6 +48,7 @@ Dock.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggleDock: PropTypes.func,
   children: PropTypes.object,
+  message: PropTypes.string
 };
 
 export default Dock;

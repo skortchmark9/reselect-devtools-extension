@@ -93,16 +93,15 @@ export default class App extends Component {
   }
 
   handleCheckSelector(selectorToCheck) {
-    if (!selectorToCheck.isRegistered) {
-      this.resetSelectorData();
-      return;
-    }
     this.props.actions.checkSelector(selectorToCheck);
   }
 
   renderGraph(graph) {
     const { checkedSelector } = this.props;
     const { dockIsOpen } = this.state;
+
+    const dockMessage = (!checkedSelector || checkedSelector.isRegistered) ?
+                        'checkSelector output' : 'register selector to get data'
 
     return (
       <div style={contentStyles.content}>
@@ -112,7 +111,10 @@ export default class App extends Component {
           selectors={graph.nodes}
         />
         <div style={contentStyles.graph}>
-          <Dock isOpen={dockIsOpen} toggleDock={this.toggleDock}>
+          <Dock
+            isOpen={dockIsOpen}
+            toggleDock={this.toggleDock}
+            message={dockMessage}>
             { checkedSelector ?
               <StateTree data={checkedSelector} /> :
               <span>No Data</span>

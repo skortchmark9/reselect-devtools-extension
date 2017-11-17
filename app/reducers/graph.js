@@ -17,8 +17,8 @@ const actionsMap = {
     const { nodes, edges } = action.payload.graph;
     const oldNodes = state.nodes;
     const mergedNodes = {};
-    Object.keys(nodes).forEach((key) => {
-      mergedNodes[key] = { ...oldNodes[key], ...nodes[key] };
+    Object.keys(nodes).forEach((id) => {
+      mergedNodes[id] = { id, ...oldNodes[id], ...nodes[id] };
     });
 
     return {

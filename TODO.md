@@ -8,15 +8,15 @@ Features:
 - [X] change N/A/ everywhere
 - [X] should we be able to get the value of selectors in the extension that we haven't added. - no
 - [X] pageApi can run into problems because we attempt to pass in an unregistered func with quotes in it.
+- [X] inject id field into graph nodes
+- [X] search selectors
+- [X] lock drawer open or closed
 - [ ] improve checkSelector rendering - zip inputs and dependencies
 - [ ] highlight most recomputed nodes
 - [ ] highlight unregistered nodes
-- [X] search selectors
 - [ ] show page action only when we are on a page w/devtools on it
-- [ ] find nodes that are depended on by a given node
-- [X] lock drawer open or closed
+- [ ] find nodes depend on a given node
 - [ ] Enable / disable depending on whether or not reselect tools have been installed
-- [ ] inject id field into graph nodes
 
 
 Platforms:
