@@ -13,16 +13,7 @@ export function checkSelectorSuccess(selector) {
 }
 
 export function checkSelector(selector) {
-  const { id } = selector;
-  return async (dispatch) => {
-    dispatch({ type: types.CHECK_SELECTOR, payload: { selector } });
-    try {
-      const checked = await Promise.resolve({ inputs: [], output: 2, id, name: id });
-      dispatch(checkSelectorSuccess(checked));
-    } catch (e) {
-      dispatch(checkSelectorFailed());
-    }
-  };
+  return { type: types.CHECK_SELECTOR, payload: { selector } };
 }
 
 
@@ -35,17 +26,5 @@ export function getSelectorGraphSuccess(graph) {
 }
 
 export function getSelectorGraph() {
-  return async (dispatch) => {
-    dispatch({ type: types.GET_SELECTOR_GRAPH });
-    try {
-      const a = { id: 'a', recomputations: 10, isRegistered: true };
-      const b = { id: 'b', recomputations: 10, isRegistered: true };
-      const graph = { nodes: { a, b }, edges: [{ from: 'a', to: 'b' }] };
-      await Promise.resolve(graph);
-      dispatch(getSelectorGraphSuccess(graph));
-      return graph;
-    } catch (e) {
-      dispatch(getSelectorGraphFailed());
-    }
-  };
+  return { type: types.GET_SELECTOR_GRAPH };
 }

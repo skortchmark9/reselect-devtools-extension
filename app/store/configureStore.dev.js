@@ -12,13 +12,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
   compose;
 /* eslint-enable no-underscore-dangle */
 
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
-  // storage(),
-);
 
+export default function (initialState, ...middlewares) {
+  const enhancer = composeEnhancers(
+    applyMiddleware(thunk, ...middlewares),
+    // storage(),
+  );
 
-export default function (initialState) {
   const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {

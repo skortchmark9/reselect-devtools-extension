@@ -128,8 +128,10 @@ export default class SelectorGraph extends Component {
     this.cy.nodes().style(nodeStyle);
     this.cy.edges().style(defaultEdgeStyle);
 
-    if (!selector) return;
-    const selectedNode = this.cy.$(`#${selector.id}`);
+    if (!selector || !selector.id) return;
+
+    // can't search with selectors because special chars, i.e. $ interfere
+    const selectedNode = this.cy.nodes(node => node.data().id === selector.id);
     selectedNode.style(selectedNodeStyle);
     paintDependencies(selectedNode.successors());
   }

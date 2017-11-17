@@ -11,11 +11,12 @@ Features:
 - [ ] improve checkSelector rendering - zip inputs and dependencies
 - [ ] highlight most recomputed nodes
 - [ ] highlight unregistered nodes
-- [ ] search selectors
+- [X] search selectors
 - [ ] show page action only when we are on a page w/devtools on it
 - [ ] find nodes that are depended on by a given node
 - [X] lock drawer open or closed
 - [ ] Enable / disable depending on whether or not reselect tools have been installed
+- [ ] inject id field into graph nodes
 
 
 Platforms:

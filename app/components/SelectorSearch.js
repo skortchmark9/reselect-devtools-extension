@@ -3,12 +3,12 @@ import Autocomplete from 'react-autocomplete';
 import Button from 'remotedev-app/lib/components/Button';
 import MdSearch from 'react-icons/lib/md/search';
 
-import style from './SelectorInspector.css';
+import style from './SelectorSearch.css';
 
 const itemStyle = isHighlighted => ({
   padding: '1em',
   background: isHighlighted ? 'rgb(79, 90, 101)' : 'rgb(0, 43, 55)',
-  borderBottom: '1px solid #e8eaf7'
+  borderBottom: '1px solid rgb(79, 90, 101)'
 });
 
 const renderItem = (item, isHighlighted) => (

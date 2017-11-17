@@ -30,6 +30,6 @@
   border-bottom: 2px solid rgb(79, 90, 101);
 }
 
-.searchContainer .autocomplete input:focused {
-  border-color: rgb(111, 179, 210);
+.searchContainer .autocomplete input:focus {
+  border-color: #e8eaf7
 }

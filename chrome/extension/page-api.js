@@ -11,9 +11,9 @@ function evalPromise(str) {
   });
 }
 
-export function checkSelector(name) {
+export function checkSelector(id) {
   const str = `(function() {
-    const __reselect_last_check = window.__RESELECT_TOOLS__.checkSelector('${name}');
+    const __reselect_last_check = window.__RESELECT_TOOLS__.checkSelector('${id}');
     console.log(__reselect_last_check);
     return __reselect_last_check;
   })()`;
