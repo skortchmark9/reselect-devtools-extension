@@ -7,23 +7,33 @@ cytoscape.use(dagre);
 const truncateText = (str, maxChars = 20) => (str.length > maxChars ? str.slice(0, maxChars) : str);
 const labelText = (id, recomputations) => truncateText(id) + (recomputations === null ? '' : ` (${recomputations})`);
 
+
+const colors = {
+  defaultEdge: 'rgb(79, 90, 101)',
+  defaultNodeLabel: 'rgb(111, 179, 210)',
+  defaultNode: 'rgb(232, 234, 246)',
+  selectedNode: '#ff4c4c',
+  dependency: '#ffeb3b',
+  dependent: '#f868d0',
+};
+
 const defaultEdgeStyle = {
   'curve-style': 'bezier',
   width: 4,
   'target-arrow-shape': 'triangle',
-  'line-color': 'rgb(79, 90, 101)',
-  'target-arrow-color': 'rgb(79, 90, 101)',
+  'line-color': colors.defaultEdge,
+  'target-arrow-color': colors.defaultEdge,
   'z-index': 1,
 };
 
 const selectedNodeStyle = {
-  'background-color': '#ff4c4c'
+  'background-color': colors.selectedNode
 };
 
 const defaultNodeStyle = {
   label: 'data(label)',
-  color: 'rgb(111, 179, 210)',
-  'background-color': 'rgb(232, 234, 246)',
+  color: colors.defaultNodeLabel,
+  'background-color': colors.defaultNode,
 };
 
 const cytoDefaults = {
@@ -75,17 +85,50 @@ function paintDependencies(elts) {
   elts.forEach((elt) => {
     if (elt.isNode()) {
       elt.style({
-        'background-color': '#ffeb3b',
+        'background-color': colors.dependency,
       });
     } else if (elt.isEdge()) {
       elt.style({
-        'line-color': '#d4d43a',
+        'line-color': colors.dependency,
         'z-index': 99,
-        'target-arrow-color': '#d4d43a',
+        'target-arrow-color': colors.dependency,
       });
     }
   });
 }
+
+function paintDependents(elts) {
+  elts.forEach((elt) => {
+    if (elt.isNode()) {
+      elt.style({
+        'background-color': colors.dependent,
+      });
+    } else if (elt.isEdge()) {
+      elt.style({
+        'line-color': colors.dependent,
+        'z-index': 99,
+        'target-arrow-color': colors.dependent,
+      });
+    }
+  });
+}
+
+
+const circleStyle = {
+  borderRadius: '50%',
+  width: '1em',
+  height: '1em',
+  display: 'inline-block',
+  margin: '0 0.5em',
+  marginTop: '0.2em'
+};
+const Circle = ({ color }) => <div style={{ ...circleStyle, background: color }} />;
+const LegendItem = ({ name, color }) => (
+  <div style={{display: 'flex', alignItems: 'center', margin: '0.5em' }}>
+    <Circle color={color} /><span>{name}</span>
+  </div>
+);
+
 
 export default class SelectorGraph extends Component {
   static propTypes = {
@@ -134,6 +177,7 @@ export default class SelectorGraph extends Component {
     const selectedNode = this.cy.nodes(node => node.data().id === selector.id);
     selectedNode.style(selectedNodeStyle);
     paintDependencies(selectedNode.successors());
+    paintDependents(selectedNode.predecessors());
   }
 
   bindEvents() {
@@ -148,6 +192,20 @@ export default class SelectorGraph extends Component {
   }
 
   render() {
-    return <div style={{ height: '100%' }} ref={(e) => { this.cyElement = e; }} />;
+    const legendStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      zIndex: 100,
+    };
+    return (
+      <div style={{ height: '100%' }} ref={(e) => { this.cyElement = e; }}>
+        <div style={legendStyle}>
+          <LegendItem name="dependency" color={colors.dependency} />
+          <LegendItem name="selected" color={colors.selectedNode} />
+          <LegendItem name="dependent" color={colors.dependent} />
+        </div>
+      </div>
+    );
   }
 }

@@ -7,9 +7,9 @@ import {
  } from '../../app/actions/graph';
 
 export default api => store => next => async (action) => {
+  const result = next(action);
   if (action.type === types.CHECK_SELECTOR) {
     const { selector } = action.payload;
-    const result = next(action);
     const { id } = selector;
     try {
       const checked = await api.checkSelector(id);
@@ -29,5 +29,5 @@ export default api => store => next => async (action) => {
     }
   }
 
-  return next(action);
+  return result;
 };

@@ -9,17 +9,18 @@ import createStore from '../../app/store/configureStore';
 import createApiMiddleware from '../../app/utils/apiMiddleware';
 
 const mockApi = {
-  checkSelector: (id) => Promise.resolve({ inputs: [], output: 2, id, name: id }),
+  checkSelector: id => Promise.resolve({ inputs: [], output: 2, id, name: id }),
   selectorGraph: () => {
     const a = { id: 'a', recomputations: 10, isRegistered: true };
     const b = { id: 'b', recomputations: 10, isRegistered: true };
-    return Promise.resolve({ nodes: { a, b }, edges: [{ from: 'a', to: 'b' }] });
+    const c = { id: 'c', recomputations: 10, isRegistered: true };
+    return Promise.resolve({ nodes: { a, b, c }, edges: [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }] });
   },
 };
 
 
-const apiMiddleware = createApiMiddleware(api);
-// const apiMiddleware = createApiMiddleware(window.location.origin === 'http://localhost:8000' ? mockApi : api);
+// const apiMiddleware = createApiMiddleware(api);
+const apiMiddleware = createApiMiddleware(window.location.origin === 'http://localhost:8000' ? mockApi : api);
 
 
 const initialState = {};
