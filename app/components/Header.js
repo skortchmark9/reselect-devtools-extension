@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Button from 'remotedev-app/lib/components/Button';
 import MdHelp from 'react-icons/lib/md/help';
+import FindReplace from 'react-icons/lib/md/find-replace';
 import RefreshIcon from 'react-icons/lib/md/refresh';
 import styles from 'remotedev-app/lib/styles';
 
@@ -11,9 +12,63 @@ const headerStyles = {
     top: 0,
     left: 0,
   },
+  select: {
+    background: 'none',
+    border: 'none',
+    color: 'white',
+    outline: 'none',
+  },
 };
 
-export default function Header({ onRefresh, onHelp }) {
+class NumberButton extends Component {
+  static propTypes = {
+    defaultValue: PropTypes.number,
+    onClick: PropTypes.func,
+    numbers: PropTypes.array.isRequired,
+  }
+  constructor(props) {
+    super(props);
+    const value = props.defaultValue === undefined ? 5 : props.defaultValue;
+    this.state = { value: value.toString() };
+    this.onNumberChange = this.onNumberChange.bind(this);
+    this.onClickWithNumber = this.onClickWithNumber.bind(this);
+  }
+  onNumberChange(e) {
+    this.setState({ value: e.target.value.toString() });
+    e.stopPropagation();
+  }
+  onClickWithNumber(e) {
+    this.props.onClick(parseInt(this.state.value, 10));
+  }
+  stopPropagation(e) {
+    e.stopPropagation();
+  }
+  render() {
+    const { numbers, children, ...other } = this.props;
+    const { value } = this.state;
+    const options = numbers.map(n => <option value={n} key={n}>{n}</option>);
+
+    return (
+      <Button {...other} onClick={this.onClickWithNumber} >
+        {children[0]}
+        &nbsp;
+        <select
+          style={headerStyles.select}
+          onClick={(e) => e.stopPropagation()}
+          value={value}
+          onChange={this.onNumberChange}
+        >
+          {options}
+        </select>
+        &nbsp;
+        {children[1]}
+      </Button>
+    );
+  }
+}
+
+
+export default function Header({ onRefresh, onHelp, onPaintWorst }) {
   return (
     <header style={styles.buttonBar}>
       <Button
@@ -25,6 +80,15 @@ export default function Header({ onRefresh, onHelp }) {
         Icon={MdHelp}
         onClick={onHelp}
       >Help</Button>
+      <NumberButton
+        Icon={FindReplace}
+        onClick={onPaintWorst}
+        numbers={[1, 5, 10, 100]}
+      >
+        <span>Select</span>
+        <span>Most Recomputed</span>
+      </NumberButton>
+
     </header>
   );
 }
@@ -32,4 +96,5 @@ export default function Header({ onRefresh, onHelp }) {
 Header.propTypes = {
   onRefresh: PropTypes.func,
   onHelp: PropTypes.func,
+  onPaintWorst: PropTypes.func,
 };

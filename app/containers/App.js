@@ -114,7 +114,7 @@ export default class App extends Component {
           <Dock
             isOpen={dockIsOpen}
             toggleDock={this.toggleDock}
-            message={dockMessage}>
+            message={dockMessage} >
             { checkedSelector ?
               <StateTree data={checkedSelector} /> :
               <span>No Data</span>
@@ -122,7 +122,8 @@ export default class App extends Component {
           </Dock>
           <SelectorGraph
             checkSelector={this.handleCheckSelector}
-            selector={ checkedSelector }
+            selector={checkedSelector}
+            ref={sg => this.sg = sg}
             {...graph}
           />
         </div>
@@ -140,7 +141,11 @@ export default class App extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <Header onRefresh={this.refreshGraph} onHelp={openGitRepo} />
+        <Header
+          onRefresh={this.refreshGraph}
+          onHelp={openGitRepo}
+          onPaintWorst={(n) => this.sg.highlightNMostRecomputed(n)}
+        />
         { this.renderContent() }
       </div>
     );

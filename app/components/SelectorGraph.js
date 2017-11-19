@@ -12,9 +12,10 @@ const colors = {
   defaultEdge: 'rgb(79, 90, 101)',
   defaultNodeLabel: 'rgb(111, 179, 210)',
   defaultNode: 'rgb(232, 234, 246)',
-  selectedNode: '#ff4c4c',
+  selectedNode: '#47ff00',
   dependency: '#ffeb3b',
   dependent: '#f868d0',
+  recomputed: 'red',
 };
 
 const defaultEdgeStyle = {
@@ -180,6 +181,25 @@ export default class SelectorGraph extends Component {
     paintDependents(selectedNode.predecessors());
   }
 
+  highlightNMostRecomputed(n = 1) {
+    const nodes = this.cy.nodes();
+    const recomputationBuckets = new Map(); // bucketzzz
+    nodes.forEach((node) => {
+      const recomputations = node.data().recomputations;
+      if (!recomputationBuckets.get(recomputations)) {
+        recomputationBuckets.set(recomputations, []);
+      }
+      recomputationBuckets.get(recomputations).push(node);
+    });
+    const mostRecomputed = [...recomputationBuckets.keys()].sort((x, y) => x - y);
+    const nMost = mostRecomputed.slice(-n);
+    const highlighted = nMost.reduce((acc, key) => acc.concat(recomputationBuckets.get(key)), []);
+    highlighted.forEach(node => node.style({
+      'background-color': colors.recomputed,
+    }));
+    this.cy.edges().style(defaultEdgeStyle);
+  }
+
   bindEvents() {
     const { checkSelector } = this.props;
     function clickHandler() {
@@ -204,6 +224,7 @@ export default class SelectorGraph extends Component {
           <LegendItem name="dependency" color={colors.dependency} />
           <LegendItem name="selected" color={colors.selectedNode} />
           <LegendItem name="dependent" color={colors.dependent} />
+          <LegendItem name="recomputed" color={colors.recomputed} />
         </div>
       </div>
     );

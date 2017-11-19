@@ -14,7 +14,10 @@ const mockApi = {
     const a = { id: 'a', recomputations: 10, isRegistered: true };
     const b = { id: 'b', recomputations: 10, isRegistered: true };
     const c = { id: 'c', recomputations: 10, isRegistered: true };
-    return Promise.resolve({ nodes: { a, b, c }, edges: [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }] });
+    const d = { id: 'd', recomputations: 2, isRegistered: true };
+    const e = { id: 'e', recomputations: 4, isRegistered: true };
+    const f = { id: 'f', recomputations: 6, isRegistered: true };
+    return Promise.resolve({ nodes: { a, b, c, d, e, f }, edges: [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }] });
   },
 };
 
