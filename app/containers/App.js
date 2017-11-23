@@ -97,6 +97,7 @@ export default class App extends Component {
     this.handleCheckSelector = this.handleCheckSelector.bind(this);
     this.refreshGraph = this.refreshGraph.bind(this);
     this.toggleDock = this.toggleDock.bind(this);
+    this.paintNWorst = this.paintNWorst.bind(this);
   }
 
   componentDidMount() {
@@ -104,7 +105,14 @@ export default class App extends Component {
   }
 
   refreshGraph() {
+    this.sg && this.sg.reset();
+    this.resetSelectorData();
     this.props.actions.getSelectorGraph();
+  }
+
+  paintNWorst(n) {
+    this.resetSelectorData();
+    this.sg.highlightNMostRecomputed(n);
   }
 
   resetSelectorData() {
@@ -170,7 +178,7 @@ export default class App extends Component {
         <Header
           onRefresh={this.refreshGraph}
           onHelp={openGitRepo}
-          onPaintWorst={(n) => this.sg.highlightNMostRecomputed(n)}
+          onPaintWorst={this.paintNWorst}
         />
         { this.renderContent() }
       </div>
