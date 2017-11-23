@@ -8,8 +8,15 @@ import * as api from './page-api';
 import createStore from '../../app/store/configureStore';
 import createApiMiddleware from '../../app/utils/apiMiddleware';
 
+const checkSelector = (id) => {
+  if (id === 'b') {
+    return Promise.resolve({ inputs: [1], output: 5, id, name: id });
+  }
+  return Promise.resolve({ inputs: [], output: 2, id, name: id });
+};
+
 const mockApi = {
-  checkSelector: id => Promise.resolve({ inputs: [], output: 2, id, name: id }),
+  checkSelector,
   selectorGraph: () => {
     const a = { id: 'a', recomputations: 10, isRegistered: true };
     const b = { id: 'b', recomputations: 10, isRegistered: true };

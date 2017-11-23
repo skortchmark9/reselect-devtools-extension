@@ -28,7 +28,7 @@ class NumberButton extends Component {
   }
   constructor(props) {
     super(props);
-    const value = props.defaultValue === undefined ? 5 : props.defaultValue;
+    const value = props.defaultValue === undefined ? 1 : props.defaultValue;
     this.state = { value: value.toString() };
     this.onNumberChange = this.onNumberChange.bind(this);
     this.onClickWithNumber = this.onClickWithNumber.bind(this);

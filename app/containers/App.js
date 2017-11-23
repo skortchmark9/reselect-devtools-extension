@@ -6,8 +6,8 @@ import styles from 'remotedev-app/lib/styles';
 import enhance from 'remotedev-app/lib/hoc';
 
 import SelectorInspector from '../components/SelectorInspector';
+import SelectorState from '../components/SelectorState';
 import SelectorGraph from '../components/SelectorGraph';
-import StateTree from '../components/StateTree';
 import Dock from '../components/Dock';
 import Header from '../components/Header';
 
@@ -46,11 +46,36 @@ function openGitRepo() {
   window.open(url, '_blank');
 }
 
+const checkedSelector = (state) => {
+  const { checkedSelectorId, nodes, edges } = state.graph;
+  const selector = nodes[checkedSelectorId];
+  if (!selector) return;
+
+  // this is a bit ugly because it relies on edges being in order.
+  const dependencies = edges.filter(edge => edge.from === checkedSelectorId);
+  const dependencyIds = dependencies.map(edge => edge.to);
+
+  if (!selector.inputs) {
+    return selector;
+  }
+
+  const { inputs } = selector;
+  if (dependencyIds.length !== inputs.length) {
+    console.error(`Uh oh, inputs and edges out of sync on ${checkedSelectorId}`);
+  }
+
+  const zipped = [];
+  for (let i = 0; i < dependencyIds.length; i++) {
+    zipped.push([dependencyIds[i], inputs[i]]);
+  }
+  return { ...selector, zipped };
+};
+
 
 @connect(
   state => ({
     graph: state.graph,
-    checkedSelector: state.graph.nodes[state.graph.checkedSelectorId]
+    checkedSelector: checkedSelector(state),
   }),
   dispatch => ({
     actions: bindActionCreators(SelectorActions, dispatch)
@@ -101,7 +126,7 @@ export default class App extends Component {
     const { dockIsOpen } = this.state;
 
     const dockMessage = (!checkedSelector || checkedSelector.isRegistered) ?
-                        'checkSelector output' : 'register selector to get data'
+                        'checkSelector output' : 'register selector to get data';
 
     return (
       <div style={contentStyles.content}>
@@ -114,9 +139,10 @@ export default class App extends Component {
           <Dock
             isOpen={dockIsOpen}
             toggleDock={this.toggleDock}
-            message={dockMessage} >
+            message={dockMessage}
+          >
             { checkedSelector ?
-              <StateTree data={checkedSelector} /> :
+              <SelectorState checkedSelector={checkedSelector} /> :
               <span>No Data</span>
             }
           </Dock>

@@ -21,7 +21,7 @@ const StateTree = ({
 );
 
 StateTree.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.any,
   style: PropTypes.object,
 };
 
