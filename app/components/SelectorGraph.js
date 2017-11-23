@@ -167,11 +167,14 @@ export default class SelectorGraph extends Component {
     if (this.cy) this.cy.destroy();
   }
 
-  paintNodeSelection(selector) {
+  reset() {
     const { label, ...nodeStyle } = defaultNodeStyle; // eslint-disable-line no-unused-vars
     this.cy.nodes().style(nodeStyle);
     this.cy.edges().style(defaultEdgeStyle);
+  }
 
+  paintNodeSelection(selector) {
+    this.reset();
     if (!selector || !selector.id) return;
 
     // can't search with selectors because special chars, i.e. $ interfere
@@ -182,6 +185,7 @@ export default class SelectorGraph extends Component {
   }
 
   highlightNMostRecomputed(n = 1) {
+    this.reset();
     const nodes = this.cy.nodes();
     const recomputationBuckets = new Map(); // bucketzzz
     nodes.forEach((node) => {
@@ -197,7 +201,6 @@ export default class SelectorGraph extends Component {
     highlighted.forEach(node => node.style({
       'background-color': colors.recomputed,
     }));
-    this.cy.edges().style(defaultEdgeStyle);
   }
 
   bindEvents() {

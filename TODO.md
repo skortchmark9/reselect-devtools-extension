@@ -12,8 +12,8 @@ Features:
 - [X] search selectors
 - [X] lock drawer open or closed
 - [X] find nodes depend on a given node
+- [X] highlight most recomputed nodes
 - [ ] improve checkSelector rendering - zip inputs and dependencies
-- [ ] highlight most recomputed nodes
 - [ ] highlight unregistered nodes
 - [ ] show page action only when we are on a page w/devtools on it
 - [ ] Enable / disable depending on whether or not reselect tools have been installed
