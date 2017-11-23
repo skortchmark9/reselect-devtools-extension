@@ -46,7 +46,7 @@ function openGitRepo() {
   window.open(url, '_blank');
 }
 
-const checkedSelector = (state) => {
+const checkedSelector$ = (state) => {
   const { checkedSelectorId, nodes, edges } = state.graph;
   const selector = nodes[checkedSelectorId];
   if (!selector) return;
@@ -75,7 +75,7 @@ const checkedSelector = (state) => {
 @connect(
   state => ({
     graph: state.graph,
-    checkedSelector: checkedSelector(state),
+    checkedSelector: checkedSelector$(state),
   }),
   dispatch => ({
     actions: bindActionCreators(SelectorActions, dispatch)
