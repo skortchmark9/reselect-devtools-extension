@@ -149,7 +149,9 @@ export default class App extends Component {
             message={dockMessage}
           >
             { checkedSelector ?
-              <SelectorState checkedSelector={checkedSelector} /> :
+              <SelectorState
+                checkedSelector={checkedSelector}
+                onClickSelector={this.handleCheckSelector} /> :
               <span>No Data</span>
             }
           </Dock>

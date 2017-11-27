@@ -163,7 +163,7 @@ export default class SelectorGraph extends Component {
       this.cy.json({ elements });
     }
 
-    if (nextProps.selector !== this.props.selector) {
+    if (nextProps.selector && nextProps.selector !== this.props.selector) {
       this.paintNodeSelection(nextProps.selector);
     }
   }
