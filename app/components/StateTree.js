@@ -17,7 +17,7 @@ const StateTree = ({ data, style = {} }) => (
       <JSONTree
         data={data}
         shouldExpandNode={shouldExpandNode}
-      / > : <div style={valueStyle}>{ data }</div>
+      / > : <div style={valueStyle}>{ "" + data }</div>
     }
   </div>
 );
