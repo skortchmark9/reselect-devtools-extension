@@ -133,7 +133,7 @@ export default class App extends Component {
     const { dockIsOpen } = this.state;
 
     const dockMessage = (!checkedSelector || checkedSelector.isNamed) ?
-                        'checkSelector output' : 'register selector to get data';
+                        'checkSelector output' : 'name selector to get data';
 
     return (
       <div style={contentStyles.content}>

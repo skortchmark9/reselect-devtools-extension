@@ -36,23 +36,26 @@ const actionsMap = {
       fetching: true,
     };
   },
-  [ActionTypes.CHECK_SELECTOR](state, action) {
-    return { ...state, checkedSelectorId: action.payload.selector.id };
-  },
   [ActionTypes.UNCHECK_SELECTOR](state) {
     return { ...state, checkedSelectorId: null };
   },
   [ActionTypes.CHECK_SELECTOR_SUCCESS](state, action) {
     const { selector } = action.payload;
     const { nodes } = state;
+    const { id } = selector;
     return {
       ...state,
+      checkedSelectorId: id,
       nodes: {
         ...nodes,
-        [selector.id]: { ...nodes[selector.id], ...selector }
+        [id]: { ...nodes[id], ...selector }
       }
     };
-  }
+  },
+  [ActionTypes.CHECK_SELECTOR_FAILED](state, action) {
+    // set it anyway
+    return { ...state, checkedSelectorId: action.payload.selector.id };
+  },
 };
 
 export default function graph(state = initialState, action) {

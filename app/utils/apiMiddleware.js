@@ -15,7 +15,7 @@ export default api => store => next => async (action) => {
       const checked = await api.checkSelector(id);
       store.dispatch(checkSelectorSuccess({ ...checked, id }));
     } catch (e) {
-      store.dispatch(checkSelectorFailed());
+      store.dispatch(checkSelectorFailed(selector));
     }
     return result;
   }

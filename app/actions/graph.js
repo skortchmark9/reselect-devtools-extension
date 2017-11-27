@@ -4,8 +4,8 @@ export function uncheckSelector() {
   return { type: types.UNCHECK_SELECTOR };
 }
 
-export function checkSelectorFailed() {
-  return { type: types.CHECK_SELECTOR_FAILED };
+export function checkSelectorFailed(selector) {
+  return { type: types.CHECK_SELECTOR_FAILED, payload: { selector } };
 }
 
 export function checkSelectorSuccess(selector) {
