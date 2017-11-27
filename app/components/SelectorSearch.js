@@ -66,7 +66,7 @@ export default class Search extends Component {
       <div className={style.searchContainer}>
         {searching && <Autocomplete
           wrapperProps={autocompleteProps}
-          inputProps={{autoFocus: true }}
+          inputProps={{ autoFocus: true }}
           placeholder="search here"
           items={items}
           menuStyle={suggestionContainerStyles}

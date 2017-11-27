@@ -16,17 +16,16 @@ import * as SelectorActions from '../actions/graph';
 
 const contentStyles = {
   content: {
-    display: 'flex',
     width: '100%',
-    height: '100%',
-    position: 'relative',
+    display: 'flex',
     flexDirection: 'column',
+    height: '100%',
   },
   graph: {
-    flexGrow: 1,
     border: '1px solid rgb(79, 90, 101)',
     position: 'relative',
-    height: '100%'
+    height: '100%',
+    minHeight: 0,
   },
 };
 
@@ -133,7 +132,7 @@ export default class App extends Component {
     const { checkedSelector } = this.props;
     const { dockIsOpen } = this.state;
 
-    const dockMessage = (!checkedSelector || checkedSelector.isRegistered) ?
+    const dockMessage = (!checkedSelector || checkedSelector.isNamed) ?
                         'checkSelector output' : 'register selector to get data';
 
     return (

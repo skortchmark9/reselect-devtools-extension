@@ -1,22 +1,27 @@
 import JSONTree from 'react-json-tree';
-
 import React, { PropTypes } from 'react';
 
 const shouldExpandNode = (keyName, data, level) => (
-  level === 1 ? (keyName[0] === 'inputs' || keyName[0] === 'output')
-              : level < 4
+  level < 2
 );
 
+const isObject = o => typeof o === 'object';
 
-const StateTree = ({
-  data, style = {}
-}) => (
+const valueStyle = {
+  marginLeft: '0.875em',
+  paddingLeft: '1.25em',
+  paddingTop: '0.25em',
+};
+
+const StateTree = ({ data, style = {} }) => (
   <div style={style}>
-    <JSONTree
-      data={data}
-      shouldExpandNode={shouldExpandNode}
-      hideRoot
-    />
+    { isObject(data) ?
+      <JSONTree
+        data={data}
+        shouldExpandNode={shouldExpandNode}
+        hideRoot
+      / > : <div style={valueStyle}>{ data }</div>
+    }
   </div>
 );
 

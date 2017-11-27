@@ -7,19 +7,30 @@ const Subheader = ({ style, children, ...props }) => (
   <h5 style={{ ...style, margin: 0 }} {...props}>{children}</h5>
 );
 
+const messageContainerStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexShrink: 0,
+};
+
 const Dock = ({ isOpen, toggleDock, message, children }) => {
   const dockStyle = {
     position: 'absolute',
     background: 'rgb(0, 43, 54)',
     top: 0,
-    border: '1px solid rgb(79, 90, 101)',
+    borderRight: '1px solid rgb(79, 90, 101)',
+    borderTop: '1px solid rgb(79, 90, 101)',
     transform: `translateX(${isOpen ? 0 : '-100%'})`,
     left: 0,
     height: '100%',
     padding: '10px',
-    minWidth: '200px',
+    minWidth: '220px',
     zIndex: 1,
     transition: 'transform 200ms ease-out',
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
   };
   const showButtonStyle = {
     position: 'relative',
@@ -30,7 +41,7 @@ const Dock = ({ isOpen, toggleDock, message, children }) => {
   };
   return (
     <div style={dockStyle}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={messageContainerStyle}>
         <Subheader>{message}</Subheader>
         <Subheader style={showButtonStyle}>
           <Button

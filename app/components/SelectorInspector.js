@@ -25,7 +25,7 @@ const containerStyle = {
 };
 
 function SelectorInfo({ selector }) {
-  const { recomputations, isRegistered, name } = selector;
+  const { recomputations, isNamed, name } = selector;
 
   const subheadStyle = { ...hStyle, color: 'rgb(111, 179, 210)' };
   let message = `(${recomputations} recomputations)`;
@@ -38,7 +38,7 @@ function SelectorInfo({ selector }) {
       <h1 style={hStyle}>{name}</h1>
       <div style={{ flexShrink: 0 }}>
         <h5 style={subheadStyle}>{message}</h5>
-        { !isRegistered && <h5 style={subheadStyle}>(unregistered)</h5> }
+        { !isNamed && <h5 style={subheadStyle}>(unregistered)</h5> }
       </div>
     </div>
   );

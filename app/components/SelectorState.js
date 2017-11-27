@@ -1,21 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import StateTree from './StateTree';
-
+import style from './SelectorState.css';
 
 const InputsSection = ({ zipped = [] }) => (
-  <section>
-    <h5>Inputs</h5>
-    <table>
+  <section className={style.section}>
+    <h5>{zipped.length ? 'Inputs' : 'No Inputs'}</h5>
+    <table style={{ width: '100%' }}>
       <tbody>
-        { zipped.map(([name, input], i) => <tr key={i}>
-          <td>{name}</td>
-          <td>{input}</td>
-        </tr>)}
+        { zipped.length ? zipped.map(([name, input], i) => (
+          <tr className={style.tr} key={i}>
+            <td >{name}</td>
+            <td><StateTree data={input} /></td>
+          </tr>)) : null
+        }
       </tbody>
     </table>
   </section>
 );
 InputsSection.propTypes = { zipped: PropTypes.array };
+
+const OutputSection = ({ output }) => (
+  <section>
+    <h5>Output</h5>
+    <StateTree data={output} />
+  </section>
+);
+OutputSection.propTypes = { output: PropTypes.any };
 
 export default class SelectorState extends Component {
   static propTypes = {
@@ -25,12 +35,9 @@ export default class SelectorState extends Component {
     const { checkedSelector } = this.props;
     const { zipped, output } = checkedSelector;
     return (
-      <div>
+      <div style={{overflowY: 'auto', flexGrow: 1}}>
+        <OutputSection output={output} />
         { zipped && <InputsSection zipped={zipped} /> }
-        <section>
-          <h5>Output</h5>
-          <StateTree data={output} />
-        </section>
       </div>
     );
   }
