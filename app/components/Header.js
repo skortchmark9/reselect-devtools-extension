@@ -83,7 +83,7 @@ export default function Header({ onRefresh, onHelp, onPaintWorst }) {
       <NumberButton
         Icon={FindReplace}
         onClick={onPaintWorst}
-        numbers={[1, 5, 10, 100]}
+        numbers={[1, 2, 3, 5, 10]}
       >
         <span>Select</span>
         <span>Most Recomputed</span>

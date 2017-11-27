@@ -12,7 +12,7 @@ const colors = {
   defaultEdge: 'rgb(79, 90, 101)',
   defaultNodeLabel: 'rgb(111, 179, 210)',
   defaultNode: 'rgb(232, 234, 246)',
-  selectedNode: '#47ff00',
+  selectedNode: 'orange',
   dependency: '#ffeb3b',
   dependent: '#f868d0',
   recomputed: 'red',
@@ -37,6 +37,8 @@ const defaultNodeStyle = {
   'background-color': colors.defaultNode,
 };
 
+const Y_SPACING = 0.1;
+
 const cytoDefaults = {
   style: [
     {
@@ -51,10 +53,17 @@ const cytoDefaults = {
   layout: {
     name: 'dagre',
     rankDir: 'BT',
+    // fit: false,
     ranker: 'longest-path',
-    spacingFactor: 0.10,
-    padding: 0,
-    nodeDimensionsIncludeLabels: true,
+    // padding: 0,
+    nodeDimensionsIncludeLabels: false, // this doesn't really work alas
+    transform: (node, { x, y }) => {
+      // increase distance between y ranks, and offset some nodes
+      // a bit up and down so labels don't collide.
+      const offsetDirection = Math.random() > 0.5 ? 1 : -1;
+      const offset = y * Y_SPACING;
+      return { x, y: y + offset + (offset * offsetDirection) };
+    }
   }
 };
 
@@ -143,7 +152,7 @@ export default class SelectorGraph extends Component {
     this.cy = drawCytoscapeGraph(this.cyElement, this.props.nodes, this.props.edges);
     const pan = this.cy.pan();
     const height = this.cy.height();
-    this.cy.pan({ ...pan, y: -height });
+    this.cy.pan({ ...pan, y: height / 3 });
     this.bindEvents();
   }
 
