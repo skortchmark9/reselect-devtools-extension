@@ -18,7 +18,11 @@ const actionsMap = {
     const oldNodes = state.nodes;
     const mergedNodes = {};
     Object.keys(nodes).forEach((id) => {
-      mergedNodes[id] = { id, ...oldNodes[id], ...nodes[id] };
+      const node = { id, ...oldNodes[id], ...nodes[id] };
+      if (node.isNamed === undefined) {
+        node.isNamed = node.isRegistered;
+      }
+      mergedNodes[id] = node;
     });
 
     return {
