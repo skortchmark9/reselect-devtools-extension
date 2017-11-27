@@ -27,6 +27,13 @@ const contentStyles = {
     height: '100%',
     minHeight: 0,
   },
+  recomputations: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    margin: 0,
+    padding: '1em',
+  }
 };
 
 
@@ -70,6 +77,12 @@ const checkedSelector$ = (state) => {
   return { ...selector, zipped };
 };
 
+
+const RecomputationsTotal = ({ nodes }) => {
+  const nodeArr = Object.keys(nodes).map(k => nodes[k]);
+  const total = nodeArr.reduce((acc, node) => acc + node.recomputations, 0);
+  return <h2 style={contentStyles.recomputations}>{total} Recomputations</h2>;
+};
 
 @connect(
   state => ({
@@ -155,6 +168,7 @@ export default class App extends Component {
               <span>No Data</span>
             }
           </Dock>
+          <RecomputationsTotal {...graph} />
           <SelectorGraph
             checkSelector={this.handleCheckSelector}
             selector={checkedSelector}
