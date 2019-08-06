@@ -1,2 +1,0 @@
-import './reselect-tools-app';
-
