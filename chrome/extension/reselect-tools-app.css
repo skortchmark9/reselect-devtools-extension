@@ -5,7 +5,6 @@ html, body, body > div {
 body {
   overflow: hidden;
   min-width: 350px;
-  min-height: 400px;
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
@@ -15,39 +14,4 @@ body {
 }
 a {
   color: #fff;
-}
-
-.ReactCodeMirror {
-  overflow: auto;
-  height: 100%;
-}
-button:disabled {
-  opacity: 0.5;
-  cursor: initial !important;
-}
-
-@media print {
-  @page {
-    size: auto;
-    margin: 0;
-  }
-
-  body {
-    position: static;
-  }
-
-  #root > div > div:not(:nth-child(2)) {
-    display: none !important;
-  }
-
-  #root > div > div:nth-child(2) {
-    overflow: visible !important;
-    position: absolute !important;
-    z-index: 2147483647;
-    page-break-after: avoid;
-  }
-
-  #root > div > div:nth-child(2) * {
-    overflow: visible !important;
-  }
 }
